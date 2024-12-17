@@ -8,13 +8,13 @@ namespace TechChallenge3.Common.RabbitMQ
     {
         public static async Task Publish(
             object message,
-            string hostName,
+            string uri,
             string exchangeName,
             string routingKeyName,
             CancellationToken ct)
         {
             // Criar uma conexão com o RabbitMQ
-            var factory = new ConnectionFactory() { HostName = hostName };
+            var factory = new ConnectionFactory() { Uri = new Uri(uri) };
             using (var connection = await factory.CreateConnectionAsync())
             using (var channel = await connection.CreateChannelAsync())
             {
