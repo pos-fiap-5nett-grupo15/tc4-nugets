@@ -6,7 +6,30 @@ namespace TechChallenge3.Common.RabbitMQ
 {
     public class RabbitMQManager
     {
-        public static async Task Publish(
+        public static async Task PublishByHostName(
+            object message,
+            string hostName,
+            string exchangeName,
+            string routingKeyName,
+            CancellationToken ct)
+        {
+            // Criar uma conexão com o RabbitMQ
+            var factory = new ConnectionFactory()
+            {
+                HostName = hostName
+            };
+            using (var connection = await factory.CreateConnectionAsync())
+            using (var channel = await connection.CreateChannelAsync())
+            {
+                // Converter a mensagem para bytes
+                var body = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(message));
+
+                // Enviar a mensagem para a fila
+                await channel.BasicPublishAsync(exchangeName, routingKeyName, body, ct);
+            }
+        }
+
+        public static async Task PublishByUri(
             object message,
             string uri,
             string exchangeName,
@@ -14,7 +37,10 @@ namespace TechChallenge3.Common.RabbitMQ
             CancellationToken ct)
         {
             // Criar uma conexão com o RabbitMQ
-            var factory = new ConnectionFactory() { Uri = new Uri(uri) };
+            var factory = new ConnectionFactory()
+            {
+                Uri = new Uri(uri)
+            };
             using (var connection = await factory.CreateConnectionAsync())
             using (var channel = await connection.CreateChannelAsync())
             {
