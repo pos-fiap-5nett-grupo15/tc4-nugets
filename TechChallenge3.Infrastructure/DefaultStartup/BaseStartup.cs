@@ -9,7 +9,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Prometheus;
+using Serilog;
+using Serilog.Sinks.Graylog;
+using Serilog.Sinks.Graylog.Core.Transport;
 using System.Text;
+using TechChallenge3.Common.HttpSettings;
+using TechChallenge3.Common.LogSettings;
 using TechChallenge3.Infrastructure.Crypto;
 using TechChallenge3.Infrastructure.HealthCheck;
 using TechChallenge3.Infrastructure.Middlewares;
@@ -27,6 +32,20 @@ namespace TechChallenge3.Infrastructure.DefaultStartup
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
         {
+            var grayloggerSettings = Configuration?.GetSection(nameof(GrayloggerSettings)).Get<GrayloggerSettings>() ?? throw new ArgumentNullException(nameof(GrayloggerSettings));
+
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Graylog(new GraylogSinkOptions
+                {
+                    HostnameOrAddress = grayloggerSettings.HostnameOrAddress,   // Endere�o do Graylog
+                    Port = grayloggerSettings.Port,                             // Porta do GELF UDP configurada no Graylog
+                    TransportType = TransportType.Udp,                          // Enviar via UDP
+                    Facility = grayloggerSettings.ServiceName                   // Nome da aplicação que está enviando os logs
+                })
+                .WriteTo.Console()
+                .CreateLogger();
+
             if (environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -63,6 +82,8 @@ namespace TechChallenge3.Infrastructure.DefaultStartup
 
         public void ConfigureService(IServiceCollection services)
         {
+            services.AddTransient<IHttpClient>(x => new HttpClientWrapper(0, 0, 30));
+            services.AddSingleton<IGraylogger, Graylogger>();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
 
