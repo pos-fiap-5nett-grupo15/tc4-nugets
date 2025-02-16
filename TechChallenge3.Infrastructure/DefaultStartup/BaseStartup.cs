@@ -38,7 +38,7 @@ namespace TechChallenge3.Infrastructure.DefaultStartup
                 .Enrich.FromLogContext()
                 .WriteTo.Graylog(new GraylogSinkOptions
                 {
-                    HostnameOrAddress = grayloggerSettings.HostnameOrAddress,   // Endere�o do Graylog
+                    HostnameOrAddress = grayloggerSettings.HostnameOrAddress,   // Endereço do Graylog
                     Port = grayloggerSettings.Port,                             // Porta do GELF UDP configurada no Graylog
                     TransportType = TransportType.Udp,                          // Enviar via UDP
                     Facility = grayloggerSettings.ServiceName                   // Nome da aplicação que está enviando os logs

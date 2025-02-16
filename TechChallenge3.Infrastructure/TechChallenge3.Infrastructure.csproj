@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>TechChallenge3.Infrastructure</PackageId>
-		<Version>1.1.0</Version>
+		<Version>1.5.0</Version>
 		<Authors>Guilherme Castro</Authors>
 		<Company>YourCompany</Company>
 		<Description>A description of your library.</Description>
@@ -29,7 +29,7 @@
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="7.0.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="7.0.0" />
-		<ProjectReference Include="..\..\tc4-nugets\TechChallenge3.Common\TechChallenge3.Common.csproj" />
-		<!-- <PackageReference Include="TechChallenge3.Common" Version="1.3.0" /> -->
+		<!-- <ProjectReference Include="..\..\tc4-nugets\TechChallenge3.Common\TechChallenge3.Common.csproj" /> -->
+		<PackageReference Include="TechChallenge3.Common" Version="1.5.0" />
 	</ItemGroup>
 </Project>
