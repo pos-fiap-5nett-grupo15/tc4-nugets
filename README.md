@@ -1,7 +1,7 @@
 
-# Tech Challenge 3 - Grupo 14
+# Tech Challenge 3 - Grupo 15
 
-Projeto realizado pelo **Grupo 14** da turma da FIAP de Arquitetura de Sistemas .NET com Azure
+Projeto realizado pelo **Grupo 15** da turma da FIAP de Arquitetura de Sistemas .NET com Azure
 
 
 ## Autores
